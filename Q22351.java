@@ -1,16 +1,23 @@
 package beakjoon;
 import java.util.Scanner;
+import java.io.*;
 
 public class Q22351 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
+		/*
 		Scanner scan = new Scanner(System.in);
 		String S;
-		do{S = scan.next();
+		do{
+			S = scan.nextLine();
 		}while((S.length()) > 889);
+		*/
 		
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		
+		String S = bf.readLine();
 		int len = S.length();
 		int [] s = new int[len];
 		int i = 0;
@@ -68,8 +75,9 @@ public class Q22351 {
 		}
 		
 		if(fir >= 1 && fir <= 999 & end>=1 && end<=999 && fir<=end) {
-			System.out.print(fir + " " + end);
+			System.out.println(fir + " " + end);
 		}
+		
 	}
 	
 	public static int one(int[] s, int len, int k) {
