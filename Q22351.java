@@ -1,5 +1,5 @@
 package beakjoon;
-import java.util.Scanner;
+
 import java.io.*;
 
 public class Q22351 {
@@ -7,109 +7,54 @@ public class Q22351 {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
-		/*
-		Scanner scan = new Scanner(System.in);
-		String S;
-		do{
-			S = scan.nextLine();
-		}while((S.length()) > 889);
-		*/
+
 		
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		
 		String S = bf.readLine();
-		int len = S.length();
-		int [] s = new int[len];
-		int i = 0;
-		for( i=0; i<len; i++) {
-			s[i] = Character.getNumericValue(S.charAt(i));
-		}
+		boolean flag = true;
+		StringBuilder sb = new StringBuilder();
 		
-		int fir = 0;
-		int end = 0;
+		// 시작 숫자 = A/ 종료 숫자 = B
 		
-		if(len == 2) {
-			if((s[0]+1) != s[1]) {
-				fir = s[0]*10 + s[1];
-				end = s[0]*10 + s[1];
+		//모든 자리 숫자가 동일한 한개의 숫자만 적혀있을 경우 검증(ex. 11/ 999)
+		if(S.length()<4) {
+			char n = S.charAt(0);
+			for(int i=1; i<S.length(); i++) {
+				if(n != S.charAt(i)) { //동일한 값이 아니라고 판별될 경우
+					flag = false;
+					break;
+				}
+			}
+			if(flag == true) {
+				sb.append(S + " " + S);
 			}
 		}
-		
-		else if(len == 3) {
-			if((s[0]+1) != s[1]*10 + s[2]) {
-				fir = s[0]*100 + s[1]*10 + s[2];
-				end = s[0]*100 + s[1]*10 + s[2];
+
+		if(S.length()>=4  || flag==false){
+			for(int i = 1; i<=999; i++) {
+				if(S.startsWith(Integer.toString(i))) {//A값 알아내기
+					String str = S;
+					for(int j = i; j<=999; j++) { // B값 알아내기
+						if(str.startsWith(Integer.toString(j))) {
+							//자리수만큼 str 지워나가기
+							str = str.substring(Integer.toString(j).length());
+						}
+						else { //i와 j가 연속된 숫자가 아닐경우 i증가 후 재검증
+							break;
+						}
+						if(str.length() == 0) { 
+							sb.append(i+" "+j);
+							break;
+						}
+					}
+				}
+				if(sb.length() != 0) {
+					break;
+				}
 			}
 		}
-		
-		//100의 자리인지 확인
-		else if(len>=6) {
-			if(s[0]*100+s[1]*10+s[2]+1 == s[3]*100+s[4]*10+s[5]) {
-				fir = s[0]*100 +s[1]*10 +s[2] ;
-				end = hun(s, len-1);
-			}
-			else if((s[0]*10 +s[1]+1) == (s[2]*10+s[3])) {
-				fir = s[0]*10 + s[1] ;
-				end = ten(s, len-1, 0);
-			}
-			else {
-				fir = s[0];
-				end = one(s, len-1, 0);
-			}
-		}
-		
-		else if(len >= 4) {
-			if((s[0]*10 +s[1]+1) == (s[2]*10+s[3])) {
-				fir = s[0]*10 + s[1] ;
-				end = ten(s, len-1, 0);
-			}
-			else {
-				fir = s[0];
-				end = one(s, len-1, 0);
-			}
-		}
-		
-		else {
-			fir = s[0];
-			end = one(s, len-1, 0);
-		}
-		
-		if(fir >= 1 && fir <= 999 & end>=1 && end<=999 && fir<=end) {
-			System.out.println(fir + " " + end);
-		}
-		
-	}
-	
-	public static int one(int[] s, int len, int k) {
-		int res = s[len];
-		
-		for(int i = k; i<len; i++) {
-			if(s[i] == 9) {
-				res = ten(s, len, i+1);
-				break;
-			}
-		}
-		return res;
-	}
-	
-	public static int ten(int [] s, int len, int k) {
-		int res = 0;
-		res = s[len]+s[len-1]*10;
-		
-		for(int i = k; i<len; i+=2) {
-			if((s[i]*10+s[i+1]) == 99) {
-				res = hun(s, len);
-				break;
-			}
-		}
-		
-		return res;
-	}
-	
-	public static int hun(int [] s, int len) {
-		int res = 0;
-		res = s[len]+s[len-1]*10+s[len-2]*100;
-		return res;
+		System.out.print(sb);
 	}
 }
 
